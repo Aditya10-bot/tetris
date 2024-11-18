@@ -22,6 +22,7 @@ let currentPiece = getRandomPiece();
 let currentX = Math.floor(cols / 2) - Math.floor(currentPiece[0].length / 2);
 let currentY = 0;
 let gameOver = false;
+let score = 0; // Tambahkan variabel untuk menyimpan skor
 
 function getRandomPiece() {
     return tetrominoes[Math.floor(Math.random() * tetrominoes.length)];
@@ -52,14 +53,19 @@ function draw() {
 
     // Tampilkan pesan game over jika gameOver adalah true
     if (gameOver) {
-        context.font = 'bold 24px Arial'; // Atur ukuran font agar lebih kecil jika perlu
+        context.font = 'bold 24px Arial';
         context.fillStyle = 'white';
-        context.textAlign = 'center'; // Pusatkan teks secara horizontal
-        context.textBaseline = 'middle'; // Pusatkan teks secara vertikal
+        context.textAlign = 'center';
+        context.textBaseline = 'middle';
         context.fillText('GAME OVER', canvas.width / 2, canvas.height / 2);
     }
-}
 
+    // Tampilkan skor
+    context.font = 'bold 16px Arial';
+    context.fillStyle = 'white';
+    context.textAlign = 'left';
+    context.fillText('Score: ' + score, 10, 20); // Gambar skor di pojok kiri atas
+}
 
 function control(event) {
     if (!gameOver) {
@@ -123,7 +129,7 @@ function drop() {
             return; // Hentikan permainan
         }
 
-        // Dapatkan balok baru
+        // Dapat kan balok baru
         currentPiece = getRandomPiece();
         currentX = Math.floor(cols / 2) - Math.floor(currentPiece[0].length / 2);
         currentY = 0;
@@ -158,6 +164,9 @@ function checkFullRows() {
     }
 
     if (rowsToClear.length > 0) {
+        // Tambahkan ke skor berdasarkan jumlah baris yang dihapus
+        score += rowsToClear.length * 100; // Misalnya, 100 poin per baris yang dihapus
+
         let animationFrame = 0;
         const animationInterval = setInterval(() => {
             animationFrame++;
